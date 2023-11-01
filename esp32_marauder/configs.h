@@ -4,6 +4,8 @@
 
   #define POLISH_POTATO
 
+  #if not defined BUILD_ENV_NAME
+
   //Indicates that it must redirect the stream with the captured packets to serial (1)
   //If not defined, will write packages to SD card if supported
   //#define WRITE_PACKETS_SERIAL
@@ -13,7 +15,7 @@
   //#define MARAUDER_MINI
   //#define MARAUDER_V4
   //#define MARAUDER_V6
-  //#define MARAUDER_V6_1
+  #define MARAUDER_V6_1
   //#define MARAUDER_KIT
   //#define GENERIC_ESP32
   //#define MARAUDER_FLIPPER
@@ -22,7 +24,11 @@
   //#define XIAO_ESP32_S3
   //// END BOARD TARGETS
 
-  #define MARAUDER_VERSION "v0.13.4"
+  #endif
+
+  #if not defined(MARAUDER_VERSION)
+    #define MARAUDER_VERSION "v0.13.4"
+  #endif
 
  //// BOARD FEATURES
   #ifdef MARAUDER_M5STICKC
