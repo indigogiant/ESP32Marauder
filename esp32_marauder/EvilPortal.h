@@ -39,8 +39,8 @@ extern Buffer buffer_obj;
 #define MAX_AP_NAME_SIZE 30
 #define WIFI_SCAN_EVIL_PORTAL 30
 
-char apName[MAX_AP_NAME_SIZE] = "PORTAL";
-char index_html[MAX_HTML_SIZE] = "TEST";
+static char apName[MAX_AP_NAME_SIZE] = "PORTAL";
+static char index_html[MAX_HTML_SIZE] = "TEST";
 
 struct ssid {
   String essid;
