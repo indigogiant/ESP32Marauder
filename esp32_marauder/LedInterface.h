@@ -4,7 +4,11 @@
 #include "configs.h"
 #include "settings.h"
 #include <Arduino.h>
+
+#ifdef HAS_NEOPIXEL_LED
 #include <Adafruit_NeoPixel.h>
+extern Adafruit_NeoPixel strip;
+#endif
 
 #define Pixels 1
 
@@ -15,7 +19,6 @@
 #define MODE_CUSTOM 4
 
 extern Settings settings_obj;
-extern Adafruit_NeoPixel strip;
 
 class LedInterface {
 
