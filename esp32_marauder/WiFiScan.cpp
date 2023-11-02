@@ -4228,13 +4228,33 @@ void WiFiScan::channelHop()
   delay(1);
 }
 
+// Hop to the next higher channel belonging to a selected access point,
+// wrapping back to the lowest channel if we're already using the highest.
+void WiFiScan::channelHopToNextSelectedAp()
+{
+  uint8_t lowestChannel = this->set_channel;
+  uint8_t nextChannel = this->set_channel;
+  for (int i = 0; i < access_points->size(); i++) {
+    auto ap = access_points->get(i);
+    if (ap.selected) {
+      if (ap.channel > this->set_channel) {
+        nextChannel = nextChannel == this->set_channel ? ap.channel : std::min(nextChannel, ap.channel);
+      } else {
+        lowestChannel = std::min(ap.channel, lowestChannel);
+      }
+    }
+  }
+  this->set_channel = nextChannel > this->set_channel ? nextChannel : lowestChannel;
+  esp_wifi_set_channel(this->set_channel, WIFI_SECOND_CHAN_NONE);
+  delay(1);
+}
+
 char* WiFiScan::stringToChar(String string) {
   char buf[string.length() + 1] = {};
   string.toCharArray(buf, string.length() + 1);
 
   return buf;
 }
-
 
 // Function for updating scan status
 void WiFiScan::main(uint32_t currentTime)
@@ -4339,7 +4359,7 @@ void WiFiScan::main(uint32_t currentTime)
     if (currentTime - initTime >= this->channel_hop_delay * 1000)
     {
       initTime = millis();
-      channelHop();
+      channelHopToNextSelectedAp();
     }
     #ifdef HAS_SCREEN
       eapolMonitorMain(currentTime);
